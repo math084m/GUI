@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace WPF_SmartCity_MathiasThomassen_201706287.Models
 {
-    class Trees : BindableBase
+    public class Trees : BindableBase
     {
         private string _sort;
         private int _number;

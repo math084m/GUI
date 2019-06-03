@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WPF_SmartCity_MathiasThomassen_201706287.Views"
         xmlns:viewModels="clr-namespace:WPF_SmartCity_MathiasThomassen_201706287.ViewModels"
         mc:Ignorable="d"
-        Title="Smart City" Height="550" Width="1080"
+        Title="Smart City " Height="550" Width="1080"
         Background="{StaticResource ResourceKey=BackGroundBrush}"
         ResizeMode="NoResize"
         >
@@ -18,10 +18,11 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top" Name="Menu">
             <MenuItem Header="_File">
-                <MenuItem Header="_New" Command="{Binding}"></MenuItem>
-                <MenuItem Header="_Open" Command="{Binding}" CommandParameter="{Binding}"></MenuItem>
-                <MenuItem Header="_Save" Command="{Binding}"></MenuItem>
-                <MenuItem Header="E_xit" Command="{Binding}"></MenuItem>
+                <MenuItem Header="_New" Command="{Binding Path=NewFileCommand}"></MenuItem>
+                <MenuItem Header="_Open" Command="{Binding Path=OpenFileCommand}"></MenuItem>
+                <MenuItem Header="_Save" Command="{Binding Path=SaveFileCommand}"></MenuItem>
+                <MenuItem Header="_SaveAs" Command="{Binding Path=SaveAsCommand}"></MenuItem>
+                <MenuItem Header="E_xit" Command="{Binding Path=CloseAppCommand}"></MenuItem>
             </MenuItem>
         </Menu>
 
@@ -35,6 +36,18 @@
                     Command="{Binding Path=AddNewLocationCommand}"
                     Style="{StaticResource ResourceKey=Button}">
                 Add location
+            </Button>
+            <Separator Width="10" Margin="5,0" Background="Transparent"/>
+            <Button ToolTip="edit location"
+                    Command="{Binding Path=AddNewLocationCommand}"
+                    Style="{StaticResource ResourceKey=Button}">
+                Edit Location
+            </Button>
+            <Separator Width="10" Margin="5,0" Background="Transparent"/>
+            <Button ToolTip=" location"
+                    Command="{Binding Path=AddNewLocationCommand}"
+                    Style="{StaticResource ResourceKey=Button}">
+                Delete location
             </Button>
         </ToolBar>
 
@@ -102,7 +115,7 @@
             <ListBox Grid.Column="3"
                      Grid.Row="1"
                      Grid.RowSpan="5"
-                     Margin="66,20,50,0"
+                     Margin="66,20,50,10"
                      Name="lstData"
                      ItemsSource="{Binding Path=Location}"
                      SelectedItem="{Binding Path=CurrLocation}"

@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Mvvm;
+using WPF_SmartCity_MathiasThomassen_201706287.Data;
 using WPF_SmartCity_MathiasThomassen_201706287.Models;
 using WPF_SmartCity_MathiasThomassen_201706287.Views;
 
@@ -19,59 +23,14 @@ namespace WPF_SmartCity_MathiasThomassen_201706287.ViewModels
     class MainViewModel : BindableBase
     {
 
-        ObservableCollection<Location> location;
+        private ObservableCollection<Location> location;
+        private string File_name = "";
+        private string filepath = "";
         
-        private string filterHelper;
 
         public MainViewModel()
         {
             location = new ObservableCollection<Location>();
-            ObservableCollection<Trees> items = new ObservableCollection<Trees>();
-            items.Add(new Trees()
-            {
-                number = 10,
-                Sort = "Bøg"
-            });
-            items.Add(new Trees()
-            {
-                number = 2,
-                Sort = "Eg"
-            });
-
-            
-            Location.Add(new Location()
-            {
-                City = "Århus",
-                LocationId = 1,
-                Name = "Universitets parken",
-                Postal = "8200",
-                Street = "Finlandsgade",
-                StreetNr = "44b",
-                Trees = items
-            });
-
-            items.Add(new Trees()
-            {
-                number = 99,
-                Sort = "Gran"
-            });
-
-            Location.Add(new Location()
-            {
-                City = "Kolding",
-                LocationId = 2,
-                Name = "Nørregade-parken",
-                Postal = "4800",
-                Street = "Nørregade",
-                StreetNr = "4",
-                Trees = items
-            });
-
-            
-            currLocation = new Location();
-
-            CurrLocation = Location[0];
-            
         }
 
         #region properties
@@ -146,11 +105,10 @@ namespace WPF_SmartCity_MathiasThomassen_201706287.ViewModels
         {
             get { return _addNewLocationCommand ?? (_addNewLocationCommand = new DelegateCommand((() =>
             {
-                int newIndex = Location[Location.Count - 1].LocationId;
-                newIndex++;
+                
+                
                 var newLocation = new Location()
                 {
-                    LocationId = newIndex,
                     Trees = new ObservableCollection<Trees>()
                 };
                 var vm = new AddLocationViewModel(newLocation);
@@ -160,7 +118,16 @@ namespace WPF_SmartCity_MathiasThomassen_201706287.ViewModels
                 };
                 if (dialog.ShowDialog() == true)
                 {
-                    
+                    if (Location.Count>0)
+                    {
+                        int newIndex = Location[Location.Count - 1].LocationId;
+                        newIndex++;
+                        newLocation.LocationId = newIndex;
+                    }
+                    else
+                    {
+                        newLocation.LocationId = 0;
+                    }
                     Location.Add(newLocation);
                     CurrLocation = newLocation;
                     currIndex++;
@@ -169,7 +136,160 @@ namespace WPF_SmartCity_MathiasThomassen_201706287.ViewModels
             }))); }
         }
 
+       
+        private ICommand _NewFileCommand;
 
+        //function taken from lecture 11 - agentassignment.
+        public ICommand NewFileCommand
+        {
+            get
+            {
+                return _NewFileCommand ?? (_NewFileCommand =
+                           new DelegateCommand(NewFileCommand_Execute));
+            }
+        }
+
+        private void NewFileCommand_Execute()
+        {
+            MessageBoxResult messageBoxResult = MessageBox.Show("Any unsaved data will be lost. Are you sure you want to initiate a new file?", "Warning",
+                MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                Location.Clear();
+                File_name = "";
+            }
+        }
+
+        private ICommand _saveAsCommand;
+
+        public ICommand SaveAsCommand
+        {
+            get
+            {
+                return _saveAsCommand ?? (_saveAsCommand
+                           = new DelegateCommand<string>(SaveAsCommand_Execute));
+            }
+        }
+
+        private void SaveAsCommand_Execute(string argFilename)
+        {
+            var dlg = new SaveFileDialog
+            {
+                Filter = "XML-files|*.xml|All Files|*.*",
+                DefaultExt = "xml"
+            };
+            if (filepath == "")
+            {
+                dlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            }
+            else
+            {
+                dlg.InitialDirectory = Path.GetDirectoryName(filepath);
+            }
+
+            if (dlg.ShowDialog(App.Current.MainWindow) == true)
+            {
+                filepath = dlg.FileName;
+                File_name = Path.GetFileName(filepath);
+                SaveFile();
+            }
+
+        }
+
+        private ICommand _saveFileCommand;
+
+        public ICommand SaveFileCommand
+        {
+            get
+            {
+                return _saveFileCommand ?? (_saveFileCommand
+                           = new DelegateCommand(SaveFileCommand_Execute, SaveFileCommand_CanExecute));
+            }
+
+        }
+
+        private void SaveFileCommand_Execute()
+        {
+            SaveFile();
+        }
+
+        private bool SaveFileCommand_CanExecute()
+        {
+            return (File_name != "") && (Location.Count > 0);
+        }
+
+        private void SaveFile()
+        {
+            try
+            {
+                Repository.SaveFile(filepath, Location);
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Unable to save file", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        ICommand _closeAppCommand;
+        public ICommand CloseAppCommand
+        {
+            get
+            {
+                return _closeAppCommand ?? (_closeAppCommand = new DelegateCommand(() =>
+                {
+                    Application.Current.MainWindow.Close();
+                }));
+            }
+        }
+
+        private ICommand _openFileCommand;
+
+        public ICommand OpenFileCommand
+        {
+            get
+            {
+                return _openFileCommand ?? (_openFileCommand =
+                           new DelegateCommand(OpenFileCommand_Execute));
+            }
+        }
+
+        private void OpenFileCommand_Execute()
+        {
+            var dlg = new OpenFileDialog
+            {
+                Filter = "XML-files|*.xml|All Files|*.*",
+                DefaultExt = "xml"
+            };
+
+            if (filepath == "")
+            {
+                dlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            }
+            else
+            {
+                dlg.InitialDirectory = Path.GetDirectoryName(filepath);
+            }
+
+            if (dlg.ShowDialog(App.Current.MainWindow) == true)
+            {
+                filepath = dlg.FileName;
+                File_name = Path.GetFileName(filepath);
+                try
+                {
+                    Repository.ReadFile(filepath,out ObservableCollection<Location> tmpLoc);
+                    Location = tmpLoc;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "Unable to open file", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+
+        }
 
         #endregion
     }

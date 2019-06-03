@@ -8,7 +8,7 @@ using Prism.Mvvm;
 
 namespace WPF_SmartCity_MathiasThomassen_201706287.Models
 {
-    class Location : BindableBase
+    public class Location : BindableBase
     {
         private int locationId;
         private string name;

@@ -25,6 +25,15 @@ namespace WPF_SmartCity_MathiasThomassen_201706287.Views
             InitializeComponent();
             
         }
-        
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ListViewTrees.Items.Refresh();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            ListViewTrees.Items.Refresh();
+        }
     }
 }

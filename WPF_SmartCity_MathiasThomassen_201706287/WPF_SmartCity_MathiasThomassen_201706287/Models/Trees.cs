@@ -20,6 +20,10 @@ namespace WPF_SmartCity_MathiasThomassen_201706287.Models
             get { return _sort;}
             set { SetProperty(ref _sort,value); }
         }
-        public int number { get; set; }
+        public int number
+        {
+            get { return _number;}
+            set { SetProperty(ref _number,value); }
+        }
     }
 }

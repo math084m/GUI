@@ -57,8 +57,39 @@ namespace WPF_SmartCity_MathiasThomassen_201706287.ViewModels
             set { SetProperty(ref currIndex,value); }
         }
 
+        private int currTreeIndex = 0;
+
+        public int CurrTreeIndex
+        {
+            get { return currTreeIndex; }
+            set{ SetProperty(ref currTreeIndex, value);}
+        }
+
+        private Trees currTree;
+
+        private string treesSort;
+        private int treeNr;
+
+        public Trees CurrTree
+        {
+            get { return currTree; }
+            set { SetProperty(ref currTree, value); }
+        }
+
+        public string TreeSort
+        {
+            get { return treesSort; }
+            set { SetProperty(ref treesSort, value); }
+        }
+
+        public int TreeNr
+        {
+            get { return treeNr; }
+            set { SetProperty(ref treeNr, value); }
+        }
+
         #endregion
-        
+
         #region SearchFilter
 
         private string filter;
@@ -96,7 +127,7 @@ namespace WPF_SmartCity_MathiasThomassen_201706287.ViewModels
 
 
         //most commands are from agent assignement, lecture 11.
-        #region Commands
+        #region Location_Commands
 
         private ICommand _addNewLocationCommand;
 
@@ -136,7 +167,93 @@ namespace WPF_SmartCity_MathiasThomassen_201706287.ViewModels
             }))); }
         }
 
-       
+        private ICommand _deleteLocationCommand;
+
+        public ICommand DeleteLocationCommand
+        {
+            get
+            {
+                return _deleteLocationCommand ?? (_deleteLocationCommand =
+                           new DelegateCommand(DeleteLocationCommand_Execute, DeleteLocationCommand_CanExecute)
+                               .ObservesProperty((() => CurrIndex)));
+            }
+        }
+
+        private void DeleteLocationCommand_Execute()
+        {
+            MessageBoxResult msgBoxResult = MessageBox.Show("Are you sure you want to delete agent " + CurrLocation.Name +
+                                                   "?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+
+            if (msgBoxResult == MessageBoxResult.Yes)
+            {
+                Location.Remove(CurrLocation);
+            }
+        }
+
+        private bool DeleteLocationCommand_CanExecute()
+        {
+            return (Location.Count > 0) && (CurrIndex >= 0);
+        }
+
+        private ICommand _addTreeCommand;
+
+        public ICommand AddTreeCommand
+        {
+            get
+            {
+                return _addTreeCommand ?? (_addTreeCommand =
+                           new DelegateCommand(AddTree_Execute, AddTree_CanExecute)
+                               .ObservesProperty(() => CurrLocation.Trees));
+
+            }
+        }
+
+        private void AddTree_Execute()
+        {
+            if (TreeNr != 0 && TreeSort != null)
+            {
+                CurrLocation.Trees.Add(new Trees()
+                {
+                    number = TreeNr,
+                    Sort = TreeSort
+
+                });
+                TreeSort = "";
+                TreeNr = 0;
+            }
+        }
+
+        private bool AddTree_CanExecute()
+        {
+            //rettes hvis tid.
+            return true;
+        }
+
+        private ICommand _removeTreeCommand;
+        public ICommand RemoveTreeCommand
+        {
+            get
+            {
+                return _removeTreeCommand ?? (_removeTreeCommand =
+                           new DelegateCommand(RemoveTree_Execute, RemoveTree_CanExecute)
+                               .ObservesProperty(() => CurrLocation.Trees));
+            }
+        }
+
+        private void RemoveTree_Execute()
+        {
+            CurrLocation.Trees.RemoveAt(CurrTreeIndex);
+        }
+
+        private bool RemoveTree_CanExecute()
+        {
+            //rettes hvis tid.
+            return true;
+        }
+
+        #endregion
+        #region File_Commands
+
         private ICommand _NewFileCommand;
 
         //function taken from lecture 11 - agentassignment.

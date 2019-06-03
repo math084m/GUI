@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF_SmartCity_MathiasThomassen_201706287", "WPF_SmartCity_MathiasThomassen_201706287\WPF_SmartCity_MathiasThomassen_201706287.csproj", "{6ADBFC53-0FBE-4365-AAC7-A47FFEA8DAAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASPNET_SmartCity_MathiasThomassen_201706287", "ASPNET_SmartCity_MathiasThomassen_201706287\ASPNET_SmartCity_MathiasThomassen_201706287.csproj", "{EA82FBC9-F8D4-4F16-9167-FF81A8F85319}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{6ADBFC53-0FBE-4365-AAC7-A47FFEA8DAAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6ADBFC53-0FBE-4365-AAC7-A47FFEA8DAAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6ADBFC53-0FBE-4365-AAC7-A47FFEA8DAAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA82FBC9-F8D4-4F16-9167-FF81A8F85319}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA82FBC9-F8D4-4F16-9167-FF81A8F85319}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA82FBC9-F8D4-4F16-9167-FF81A8F85319}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA82FBC9-F8D4-4F16-9167-FF81A8F85319}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

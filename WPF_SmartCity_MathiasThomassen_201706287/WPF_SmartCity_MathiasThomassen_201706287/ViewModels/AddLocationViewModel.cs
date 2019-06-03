@@ -16,11 +16,6 @@ namespace WPF_SmartCity_MathiasThomassen_201706287.ViewModels
         public AddLocationViewModel(Location location)
         {
             CurrLocation = location;
-            CurrLocation.Trees.Add(new Trees()
-            {
-                number = 20,
-                Sort = "thomas"
-            });
         }
 
         #region properties

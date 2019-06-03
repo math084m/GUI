@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WPF_SmartCity_MathiasThomassen_201706287.Models;
 
 namespace WPF_SmartCity_MathiasThomassen_201706287.Views
 {
@@ -22,6 +23,8 @@ namespace WPF_SmartCity_MathiasThomassen_201706287.Views
         public Main()
         {
             InitializeComponent();
+            
         }
+        
     }
 }

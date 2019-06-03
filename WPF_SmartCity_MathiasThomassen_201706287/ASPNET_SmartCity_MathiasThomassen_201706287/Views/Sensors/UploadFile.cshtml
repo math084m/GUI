@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Upload file</h2>
+
+
+<form asp-controller="Sensors" asp-action="UploadFile" method="post" enctype="multipart/form-data">
+    <p><small>Supports .xml files</small></p>
+    <input type="file" name="file" id="file" />
+    <br />
+    <button class="btn btn-default" type="submit">Upload file</button>
+</form>

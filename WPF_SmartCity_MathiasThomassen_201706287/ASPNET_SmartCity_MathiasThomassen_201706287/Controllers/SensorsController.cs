@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,9 +8,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ASPNET_SmartCity_MathiasThomassen_201706287.Data;
 using ASPNET_SmartCity_MathiasThomassen_201706287.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace ASPNET_SmartCity_MathiasThomassen_201706287.Controllers
 {
+    [Authorize]
     public class SensorsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -149,5 +153,38 @@ namespace ASPNET_SmartCity_MathiasThomassen_201706287.Controllers
         {
             return _context.Sensor.Any(e => e.SensorId == id);
         }
+
+        //GET: Sensors/UploadFile/ - Used in projekt prj4 - gruppe8, changed to fit better.
+        public IActionResult UploadFile()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> UploadFile(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return NotFound();
+
+            string extenstion = Path.GetExtension(file.FileName);
+            if (extenstion == ".xml")
+            {
+                
+                var path = Directory.GetCurrentDirectory() +  "~\\wwwroot\\files\\" + Path.GetFileName(file.FileName);
+                //var url = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", Path.GetFileName(file.FileName));
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                HttpContext.Session.SetString("URL", path);
+
+                return RedirectToAction("Index");
+            }
+
+            return NotFound();
+        }
+        
     }
 }

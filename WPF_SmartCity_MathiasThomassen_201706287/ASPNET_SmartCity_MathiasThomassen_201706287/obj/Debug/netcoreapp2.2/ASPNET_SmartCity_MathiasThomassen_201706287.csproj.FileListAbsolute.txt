@@ -35,3 +35,4 @@ C:\Users\math0\source\repos\GUI\WPF_SmartCity_MathiasThomassen_201706287\ASPNET_
 C:\Users\math0\source\repos\GUI\WPF_SmartCity_MathiasThomassen_201706287\ASPNET_SmartCity_MathiasThomassen_201706287\obj\Debug\netcoreapp2.2\Razor\Views\Sensors\Details.g.cshtml.cs
 C:\Users\math0\source\repos\GUI\WPF_SmartCity_MathiasThomassen_201706287\ASPNET_SmartCity_MathiasThomassen_201706287\obj\Debug\netcoreapp2.2\Razor\Views\Sensors\Edit.g.cshtml.cs
 C:\Users\math0\source\repos\GUI\WPF_SmartCity_MathiasThomassen_201706287\ASPNET_SmartCity_MathiasThomassen_201706287\obj\Debug\netcoreapp2.2\Razor\Views\Sensors\Index.g.cshtml.cs
+C:\Users\math0\source\repos\GUI\WPF_SmartCity_MathiasThomassen_201706287\ASPNET_SmartCity_MathiasThomassen_201706287\obj\Debug\netcoreapp2.2\Razor\Views\Sensors\UploadFile.g.cshtml.cs
